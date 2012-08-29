@@ -1,0 +1,133 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+   http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>org.lua.commons</groupId>
+   <artifactId>lua-commons</artifactId>
+   <packaging>pom</packaging>
+   <version>1.0</version>
+   <name>Lua Commons</name>
+
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <downloadSources>true</downloadSources>
+
+      <lua.commons.version>1.0</lua.commons.version>
+
+      <testng.version>6.0.1</testng.version>
+      <lua.version>5.2</lua.version>
+   </properties>
+
+   <profiles>
+      <profile>
+         <id>linux64</id>
+         <activation>
+            <os>
+               <family>unix</family>
+               <arch>amd64</arch>
+            </os>
+         </activation>
+         <properties>
+            <os.signature>linux64</os.signature>
+         </properties>
+      </profile>
+      <profile>
+         <id>linux32</id>
+         <activation>
+            <os>
+               <family>unix</family>
+               <arch>i386</arch>
+            </os>
+         </activation>
+         <properties>
+            <os.signature>linux32</os.signature>
+         </properties>
+      </profile>
+   </profiles>
+
+
+   <modules>
+      <module>lua-commons-1-native-level</module>
+      <module>lua-commons-impl</module>
+      <module>lua-commons-2-base-level</module>
+      <module>lua-commons-3-custom-level</module>
+      <module>lua-commons-web</module>
+
+      <module>lua-commons-configuration</module>
+   </modules>                               
+
+   <dependencies>
+   </dependencies>
+
+   <dependencyManagement>
+      <dependencies>
+         <dependency>
+            <groupId>org.lua.commons</groupId>
+            <artifactId>lua-commons-native-level</artifactId>
+            <version>${lua.commons.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.lua.commons</groupId>
+            <artifactId>lua-commons-base-level</artifactId>
+            <version>${lua.commons.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.lua.commons</groupId>
+            <artifactId>lua-commons-custom-level</artifactId>
+            <version>${lua.commons.version}</version>
+         </dependency>
+         <dependency>
+            <groupId>org.lua.commons.impl</groupId>
+            <artifactId>lua-commons-impl-lua-java</artifactId>
+            <version>${lua.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.lua.commons.web</groupId>
+            <artifactId>lua-commons-web-core</artifactId>
+            <version>${lua.commons.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.lua.commons.configuration</groupId>
+            <artifactId>lua-commons-configuration-core</artifactId>
+            <version>${lua.commons.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+         </dependency>
+      </dependencies>
+   </dependencyManagement>
+
+   <build>
+      <plugins>
+         <plugin>
+            <artifactId>maven-compiler-plugin</artifactId> 
+            <version>2.3.2</version>  
+            <configuration>
+               <source>1.5</source>
+               <target>1.5</target>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>2.1.1</version>
+            <executions>
+               <execution>
+                  <id>attach-sources</id>
+                  <goals>
+                     <goal>jar</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
+
+</project>
+

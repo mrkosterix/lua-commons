@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+      <groupId>org.lua.commons.impl</groupId>
+      <artifactId>lua-commons-impl-lua</artifactId>
+      <version>5.2</version>
+   </parent>
+
+   <groupId>org.lua.commons.impl</groupId>
+   <artifactId>lua-commons-impl-lua-tests</artifactId>
+   <packaging>jar</packaging>
+   <name>Lua Commons Impl::Lua 5.2 for Java Tests</name>
+
+   <dependencies>
+      <dependency>
+         <groupId>org.lua.commons</groupId>
+         <artifactId>lua-commons-native-level</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.lua.commons.impl</groupId>
+         <artifactId>lua-commons-impl-lua-java</artifactId>
+      </dependency>
+ 
+      <dependency>
+         <groupId>org.testng</groupId>
+         <artifactId>testng</artifactId>
+         <scope>test</scope>
+      </dependency>
+   </dependencies>
+
+</project>

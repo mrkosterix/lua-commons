@@ -1,0 +1,79 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+      <groupId>org.lua.commons.impl</groupId>
+      <artifactId>lua-commons-impl-lua</artifactId>
+      <version>5.2</version>
+   </parent>
+
+   <groupId>org.lua.commons.impl</groupId>
+   <artifactId>lua-commons-impl-lua-java</artifactId>
+   <packaging>jar</packaging>
+   <name>Lua Commons Impl::Lua 5.2 For Java</name>
+   <version>5.2</version>
+
+   <properties>
+      <lua.version>5.2</lua.version>
+   </properties>
+
+   <dependencies>
+      <dependency>
+         <groupId>org.lua.commons</groupId>
+         <artifactId>lua-commons-native-level</artifactId>
+      </dependency>
+   </dependencies>
+
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>copy lua native lib</id>
+                  <phase>process-resources</phase>
+                  <goals>
+                     <goal>copy</goal>
+                  </goals>
+                  <configuration>
+                     <artifactItems>
+                        <artifactItem>
+                           <groupId>org.lua.commons.impl</groupId>
+                           <artifactId>lua-commons-impl-lua-lib-${os.signature}</artifactId>
+                           <version>${lua.version}</version>
+                           <type>zip</type>
+                           <overWrite>false</overWrite>
+                           <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                           <destFileName>lua-commons-impl-lua-lib-${os.signature}.zip</destFileName>
+                           </artifactItem>
+                     </artifactItems>
+                     <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                     <overWriteReleases>false</overWriteReleases>
+                     <overWriteSnapshots>true</overWriteSnapshots>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+         <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>unzip native library</id>
+                  <phase>process-resources</phase>
+                  <configuration>
+                     <tasks>
+                        <unzip src="${project.build.directory}/libs/lua-commons-impl-lua-lib-${os.signature}.zip" dest="${project.build.directory}/classes" />
+                     </tasks>
+                  </configuration>
+                  <goals>
+                     <goal>run</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
+   
+
+</project>

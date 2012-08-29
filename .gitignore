@@ -1,0 +1,14 @@
+.idea
+*.iml
+
+.classpath
+.project
+.settings/
+target/
+test-output/
+bin/
+
+# vim swap
+*.swp
+
+hs_err_pid*.log

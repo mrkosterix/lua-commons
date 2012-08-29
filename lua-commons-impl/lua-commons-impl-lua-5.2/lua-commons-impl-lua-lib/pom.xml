@@ -1,0 +1,207 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+      <groupId>org.lua.commons.impl</groupId>
+      <artifactId>lua-commons-impl-lua</artifactId>
+      <version>5.2</version>
+   </parent>
+
+   <groupId>org.lua.commons.impl</groupId>
+   <artifactId>lua-commons-impl-lua-lib</artifactId>
+   <packaging>jar</packaging>
+   <name>Lua Commons Impl::Lua 5.2 lib</name>
+   <version>5.2</version>
+
+   <properties>
+      <native.source.dir>src/main/native</native.source.dir>
+      <lua.version>5.2</lua.version>
+   </properties>
+
+   <profiles>
+      <profile>
+         <id>linux64</id>
+         <activation>
+            <os>
+               <family>unix</family>
+               <arch>amd64</arch>
+            </os>
+         </activation>
+         <properties>
+            <os.signature>linux64</os.signature>
+         </properties>
+         <build>
+            <plugins>
+               <plugin>
+                  <artifactId>maven-antrun-plugin</artifactId>
+                     <executions>
+                        <execution>
+                           <id>copy native resources</id>
+                           <phase>generate-resources</phase>
+                           <configuration>
+                           <tasks>
+                              <copy todir="${project.build.directory}/libs">
+                                 <fileset file="src/main/libs/liblua-linux64/liblua${lua.version}.a" />
+                              </copy>
+                              <copy todir="${project.build.directory}/java-includes/native">
+                                 <fileset dir="src/main/native/java-includes/linux64" />
+                              </copy>
+                              <copy tofile="${project.build.directory}/build">
+                                 <fileset file="src/main/build.sh" />
+                              </copy>
+                              <chmod file="${project.build.directory}/build" perm="+x"/>
+                           </tasks>
+                        </configuration>
+                        <goals>
+                           <goal>run</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+      <profile>
+         <id>linux32</id>
+         <activation>
+            <os>
+               <family>unix</family>
+               <arch>i386</arch>
+            </os>
+         </activation>
+         <properties>
+            <os.signature>linux32</os.signature>
+         </properties>
+         <build>
+            <plugins>
+               <plugin>
+                  <artifactId>maven-antrun-plugin</artifactId>
+                     <executions>
+                        <execution>
+                           <id>copy native resources</id>
+                           <phase>generate-resources</phase>
+                           <configuration>
+                           <tasks>
+                              <copy todir="${project.build.directory}/libs">
+                                 <fileset file="src/main/libs/liblua-linux32/liblua${lua.version}.a" />
+                              </copy>
+                              <copy todir="${project.build.directory}/java-includes/native">
+                                 <fileset dir="src/main/native/java-includes/linux32" />
+                              </copy>
+                              <copy tofile="${project.build.directory}/build">
+                                 <fileset file="src/main/build.sh" />
+                              </copy>
+                              <chmod file="${project.build.directory}/build" perm="+x"/>
+                           </tasks>
+                        </configuration>
+                        <goals>
+                           <goal>run</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
+
+   <build>
+      <plugins>
+         <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>copy resources</id>
+                  <phase>process-resources</phase>
+                  <configuration>
+                     <tasks>
+                        <copy todir="${project.build.directory}/c">
+                           <fileset file="src/main/native/lua2java.c" />
+                           <fileset file="src/main/native/lua2java.h" />
+                        </copy>
+                        <copy todir="${project.build.directory}/lua-includes">
+                           <fileset dir="src/main/native/lua-includes" />
+                        </copy>
+                        <unzip src="${project.build.directory}/lua-includes/lua-headers.zip" dest="${project.build.directory}/lua-includes" />
+                        <copy todir="${project.build.directory}/java-includes">
+                           <fileset file="src/main/native/java-includes/jdk-headers.zip" />
+                        </copy>
+                        <unzip src="${project.build.directory}/java-includes/jdk-headers.zip" dest="${project.build.directory}/java-includes" />
+                        <unzip src="${project.build.directory}/java-includes/native/jdk-native-headers.zip" dest="${project.build.directory}/java-includes" />
+                     </tasks>
+                  </configuration>
+                  <goals>
+                     <goal>run</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>compile library</id>
+                  <phase>compile</phase>
+                  <goals>
+                     <goal>exec</goal>
+                  </goals>
+                  <configuration>
+                     <executable>${project.build.directory}/build</executable>
+                     <workingDirectory>${project.build.directory}</workingDirectory>
+                     <arguments>
+                        <argument>${os.signature}</argument>
+                        <argument>${lua.version}</argument>
+                     </arguments>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+         <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>zip library</id>
+                  <phase>package</phase>
+                  <configuration>
+                     <tasks>
+                        <zip destfile="${project.build.directory}/lua2java-lib.zip">
+                           <fileset file="${project.build.directory}/lua2java-lib*" />
+                        </zip>
+                     </tasks>
+                  </configuration>
+                  <goals>
+                     <goal>run</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>install library</id>
+                  <phase>install</phase>
+                  <goals>
+                     <goal>exec</goal>
+                  </goals>
+                  <configuration>
+                     <executable>mvn</executable>
+                     <workingDirectory>${project.build.directory}</workingDirectory>
+                     <arguments>
+                        <argument>install:install-file</argument>
+                        <argument>-Dfile=lua2java-lib.zip</argument>
+                        <argument>-DgroupId=org.lua.commons.impl</argument>
+                        <argument>-DartifactId=lua-commons-impl-lua-lib-${os.signature}</argument>
+                        <argument>-Dversion=${lua.version}</argument>
+                        <argument>-Dpackaging=zip</argument>
+                     </arguments>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
+
+</project>
