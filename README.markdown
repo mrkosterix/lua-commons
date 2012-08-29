@@ -34,13 +34,13 @@ Lua-commons project contains some useful examples of using framework. This tools
 
 One of the main idea of this framework to use lua in clouds as transport language. It's mix of RPC and REST architectures.
 
-Why it's not RPC:
+Why it's not RPC
 
 1. Components don't depends by hardware or OS, because Lua has a own VM that works on many popular platforms
 2. One server couldn't send any object to other server, for sending objects framework uses only JSON representation
 3. Different servers haven't shared objects or other resources.
 
-Why it's not REST:
+Why it's not REST
 
 1. You don't need to create more REST services on many servers to implement new feature, or change of response
 2. Your code stored only in one place, and can be easily changed
