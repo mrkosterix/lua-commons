@@ -35,13 +35,15 @@ Lua-commons project contains some useful examples of using framework. This tools
 One of the main idea of this framework to use lua in clouds as transport language. It's mix of RPC and REST architectures.
 
 Why it's not RPC:
-1. Components don't depends by hardware or OS, because Lua has a own VM that works on many popular platforms;
-2. One server couldn't send any object to other server, for sending objects framework uses only JSON representation;
+
+1. Components don't depends by hardware or OS, because Lua has a own VM that works on many popular platforms
+2. One server couldn't send any object to other server, for sending objects framework uses only JSON representation
 3. Different servers haven't shared objects or other resources.
 
 Why it's not REST:
-1. You don't need to create more REST services on many servers to implement new feature, or change of response;
-2. Your code stored only in one place, and can be easily changed;
+
+1. You don't need to create more REST services on many servers to implement new feature, or change of response
+2. Your code stored only in one place, and can be easily changed
 3. Components in cloud can be more reusable without any changings, because its have full private api (like DSL).
 
 It is NOT alternative for REST architecture. REST services are still good choice for interacting users with system. This architecture must used as internal protocol, for integration different components in solid system.
@@ -97,26 +99,14 @@ LuaThread has two main fields for working with lua: state and stack. This fields
 
 ### Base level
 
-1. BaseLuaTools:
-1.1. openLibs - opens standart lua libraries;
-1.2. doFile - executes lua script from file;
-1.3. doString - executes lua script from string;
-1.4. loadFile - loads lua script from file but not execute it (load as function);
-1.5. loadString - loads lua script from file but not execute it (loads as function);
-1.6. getGlobalsTable - returns lua globals table;
-1.7. setGlobalsTable - sets lua globals table.
-2. BaseLuaThread:
-2.1. newThread - creates new lua thread.
+1. BaseLuaTools (openLibs, doFile, doString, loadFile, loadString, getGlobalsTable, setGlobalsTable);
+2. BaseLuaThread (newThread)
 3. LuaStack - functions for working with lua stack.
 
 ### Custom level
 
-1. CustomLuaTools:
-1.1. castFrom - cast object from lua to java;
-1.2. castTo - cast object from java to lua.
-2. SandboxLuaTools:
-2.1. safeThread - block using some lua functions for same thread;
-2.2. newSafeThread - create new thread with some blocked lua functions.
+1. CustomLuaTools (castFrom and castTo)
+2. SandboxLuaTools (safeThread and newSafeThread)
 
 ## Lua type wrappers
 
